@@ -1,0 +1,136 @@
+<div>
+    <script>
+        // wait for the content to be loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // get the form
+            const form = document.getElementById("contact-form");
+            // add an event listener on submit
+            form.addEventListener("submit", function(event) {
+                // prevent the default action
+                event.preventDefault();
+                // get all data from the form in a variable for each value for later use
+                const lastname = document.getElementById("lastname").value;
+                const surname = document.getElementById("surname").value;
+                const email = document.getElementById("email").value;
+                const subject = document.getElementById("subject").value;
+                const content = document.getElementById("content").value;
+
+                if (email === "" || subject === "" || content === "") {
+                    alert("Fill in the required fields");
+                    return;
+                }
+
+                // send the data to the server
+                fetch("http://localhost:3000/contact", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: lastname,
+                        surname: surname,
+                        email: email,
+                        subject: subject,
+                        content: content
+                    })
+                })
+                    .then(function(response) {
+                        // check if the response is ok
+                        if (response.ok) {
+                            // if it is, display a success message
+                            alert("Success!");
+                        } else {
+                            // if not, display an error message
+                            alert("Error!");
+                        }
+                    })
+                    .catch(function(error) {
+                        // if there is an error, display an error message
+                        alert("Error!");
+                    });
+
+            });
+        });
+    </script>
+    <style>
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* inner padding */
+            padding: 0px 20px;
+        }
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            /* padding: 0px 20px; */
+        }
+        .leftRight {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .separator {
+            width: 5vw;
+        }
+        .form input[type=text], .form input[type=email], .form textarea {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 3px solid #ccc;
+            /* outline: none; */
+            border-radius: 5px;
+        }
+        .form textarea {
+            resize: vertical;
+        }
+        .form input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+    <div>
+        <form action="/contact" method="post" class="form" id="contact-form">
+            <div class="leftRight">
+                <div class="info">
+                    <label for="lastname">Name</label>
+                    <input type="text" id="lastname" name="lastname" placeholder="Name">
+                </div>
+                <div class="separator">
+                </div>
+                <div class="info">
+                    <label for="surname">Surname</label>
+                    <input type="text" id="surname" name="surname" placeholder="Surname">
+                </div>
+            </div>
+            </br>
+            <div class="info">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="E-mail (required)" required>
+            </div>
+            </br>
+            <div class="info">
+                <label for="content">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="Subject (required)" required>
+            </div>
+            </br>
+            <div class="info">
+                <label for="content">Message</label>
+                <textarea id="content" name="content" placeholder="Your message (required)" required></textarea>
+            </div>
+            </br>
+            <input type="submit" value="Send">
+        </form>
+    </div>
+</div>

@@ -36,6 +36,15 @@ app.post('/contact', (req, res) => {
         webhookURL: process.env.DISCORD_WEBHOOK_URL
     });
 
+    // omniMessage.setSlackUse(true);
+    // omniMessage.setSlackToken(process.env.SLACK_TOKEN);
+    // omniMessage.setSlackChannelId(process.env.SLACK_CHANNEL_ID);
+    omniMessage.setSlackVariables({
+        use: true,
+        token: process.env.SLACK_TOKEN,
+        channelId: process.env.SLACK_CHANNEL_ID
+    });
+
     omniMessage.sendAll()
         .then(() => {
             res.status(200).send('Message sent successfully');
